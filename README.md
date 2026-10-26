@@ -1,1 +1,0 @@
-# airpods-pro-android
