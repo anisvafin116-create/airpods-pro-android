@@ -14,6 +14,14 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothManager
+import android.bluetooth.BluetoothSocket
+import android.bluetooth.le.ScanCallback
+import android.bluetooth.le.ScanFilter
+import android.bluetooth.le.ScanResult
+import android.bluetooth.le.ScanSettings
 import android.graphics.Color as AndroidColor
 import android.graphics.PixelFormat
 import android.graphics.Typeface
@@ -618,6 +626,7 @@ class AirPodsService : Service() {
         popupRightText?.text = if (state.rightBattery >= 0) "${state.rightBattery}%" else "—"
     }
 
+    () -> Unit
     private fun resetPopupTimer() {
         mainHandler.removeCallbacks(dismissPopupRunnable)
         mainHandler.postDelayed(dismissPopupRunnable, 8_000L)
@@ -651,7 +660,7 @@ fun BatteryCard(title: String, battery: Int, isCharging: Boolean, inEar: Boolean
 
 @Composable
 fun AncButton(label: String, isSelected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = modifier, colors = ButtonDefaults.buttonColors(containerColor = if (isSelected) Color(0xFF2196F3) else Color(0xFF2C2C2C)), shape = RoundedCornerShape(12.dp)) {
+    Button(onClick, modifier, colors = ButtonDefaults.buttonColors(containerColor = if (isSelected) Color(0xFF2196F3) else Color(0xFF2C2C2C)), shape = RoundedCornerShape(12.dp)) {
         Text(label, color = Color.White, fontSize = 13.sp)
     }
 }
