@@ -474,10 +474,10 @@ class AirPodsService : Service() {
                 } ?: return@launch
 
                 aacpSocket?.close()
-                val socket = bondedAirPods.createInsecureRfcommSocketToServiceRecord(AACP_UUID)
-                socket.connect()
+                val socket = bondedAirPods?.createInsecureRfcommSocketToServiceRecord(AACP_UUID)
+                socket?.connect()
                 aacpSocket = socket
-                aacpOutputStream = socket.outputStream
+                aacpOutputStream = socket?.outputStream
 
                 val handshake = byteArrayOf(0x00, 0x00, 0x04, 0x00, 0x01, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
                 aacpOutputStream?.write(handshake)
@@ -626,7 +626,6 @@ class AirPodsService : Service() {
         popupRightText?.text = if (state.rightBattery >= 0) "${state.rightBattery}%" else "—"
     }
 
-    () -> Unit
     private fun resetPopupTimer() {
         mainHandler.removeCallbacks(dismissPopupRunnable)
         mainHandler.postDelayed(dismissPopupRunnable, 8_000L)
@@ -660,7 +659,7 @@ fun BatteryCard(title: String, battery: Int, isCharging: Boolean, inEar: Boolean
 
 @Composable
 fun AncButton(label: String, isSelected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Button(onClick, modifier, colors = ButtonDefaults.buttonColors(containerColor = if (isSelected) Color(0xFF2196F3) else Color(0xFF2C2C2C)), shape = RoundedCornerShape(12.dp)) {
+    Button(onClick = onClick, modifier = modifier, colors = ButtonDefaults.buttonColors(containerColor = if (isSelected) Color(0xFF2196F3) else Color(0xFF2C2C2C)), shape = RoundedCornerShape(12.dp)) {
         Text(label, color = Color.White, fontSize = 13.sp)
     }
 }
